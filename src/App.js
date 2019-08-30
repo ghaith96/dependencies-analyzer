@@ -1,31 +1,79 @@
 import React from 'react';
-import Card from './Components/Card';
+import { View, StyleSheet } from 'react-native'
+import PackageManager from './Services/PackageManager';
+import { Header, Footer, CardList, AnalyzeUrlComponent, Loading } from './Components'
+import { WrongUrl, NotFound, GenericError } from './Components/ErrorComponents'
+import constants from './Utils/constants';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      url: ''
+    constructor(props) {
+        super(props)
+        this.state = {
+            loading: false,
+            error: false,
+            packages: [],
+            packagesCount: 0,
+        }
     }
-    this.packages = ['sss', 'history', 'test', 'mocha', 'jasmine', 'react', 'yarn']
-  }
 
-  render() {
-    return (
-      <div>
-        <div>
-          <input className="w-50 blue br2 pa2 ma3 f4 lh-solid" value={this.state.url} onChange={this.handleTextChange} />
-          <button onClick={this.handleAnalyzeClick} className="blue pa2">Analyze</button>
-        </div>
-        <div className='tc flex-row justify-center align-center' style={{ display: 'flex' }}>
-          {
-            this.packages.map((e, i) => <Card key={e.pkgName || `${i}`} pkgName={e} />)
-          }
-        </div>
-      </div>
-    )
-  }
+    render() {
+        return (
+            <View style={style.content}>
+                <Header />
+                <AnalyzeUrlComponent handleAnalyzeClick={this.getPackages} />
+                {
+                    this.state.error ?
+                        this.getErrorComponent()
+                        :
+                        <React.Fragment>
+                            <CardList packages={this.state.packages} loading={this.state.loading} />
+                            {
+                                this.state.loading &&
+                                <Loading percentage={Math.floor((this.state.packages.length / this.state.packagesCount) * 100) || 0} />
+                            }
+                        </React.Fragment>
+                }
+                <Footer />
+            </View>
+        )
+    }
 
-  handleTextChange = (event) => this.setState({ url: event.target.value })
-  handleAnalyzeClick = (event) => console.log('hii')
+    getPackages = async (url) => {
+        this.setState({ loading: true, packages: [], error: false })
+        let response = await PackageManager.getPackages(url)
+        if (response.status) {
+            this.setState({ loading: false, error: response })
+        } else {
+            this.setState({ packagesCount: response.length })
+            await PackageManager.getPackageInfo(response, this.handleNewPackage)
+        }
+    }
+
+    handleNewPackage = (pkg) => {
+        let stillLoading = (this.state.packages.length + 1 < this.state.packagesCount)
+        let packages = [...this.state.packages, pkg]
+        packages = stillLoading ? packages : packages.sort((a, b) => a.description.length - b.description.length)
+        this.setState({ packages, loading: stillLoading })
+    }
+
+    getErrorComponent = () => {
+        let { status } = this.state.error
+        switch (status) {
+            case constants.ERROR.WRONG_URL:
+                return <WrongUrl />
+            case constants.ERROR.NOT_FOUND:
+                return <NotFound />
+            case constants.ERROR.BAD_REQUEST:
+            default:
+                console.log(`${constants.MESSAGES.SOMETHING_WENT_WRONG} ${JSON.stringify(this.state.error)}`)
+                return <GenericError />
+        }
+    }
 }
+
+const style = StyleSheet.create({
+    content: {
+        margin: 8,
+        justifyContent: 'space-between'
+    }
+})

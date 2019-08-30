@@ -1,74 +1,70 @@
 import React from 'react'
-import Analyzer from '../Services/Analyzer';
-import { RandomSpinner } from '../Utils';
+import { View, Text, TouchableOpacity, StyleSheet, Clipboard } from 'react-native'
 
-export default class Card extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            loading: true,
-            info: {}
-        }
-    }
-
-    componentDidMount = async () => {
-        // let response = await Analyzer.getPackageInfo(this.props.pkgName)
-        // this.setState({ info: response, loading: false })
-    }
+export default class Card extends React.PureComponent {
 
     render() {
-        if (this.state.loading)
-            return (
-                <div className="bg-lightest-blue br3 shadow5 grow" style={styles.loading} >
-                    <RandomSpinner loading={this.state.loading} />
-                </div >
-            )
+        let { name, description, latestVersion } = this.props.pkg
         return (
-            <div className="bg-lightest-blue dib br3 pa3 ma3 bw2 shadow5 grow" >
-                {
-                    this.state.status ? this.getErrorContent() : this.getContent()
-                }
-            </div >
+            <View style={style.content}>
+                <View style={style.cardHeader}>
+                    <TouchableOpacity onPress={this.openHomePage} onLongPress={this.copyNameToClipboard}>
+                        <Text style={style.pkgName}>{name}</Text>
+                    </TouchableOpacity>
+                    <Text style={style.latestVersion}>{latestVersion}</Text>
+                </View>
+                <View style={style.descriptionContent}>
+                    <Text style={style.description}>{description}</Text>
+                </View>
+            </View>
         )
     }
-
-    getErrorContent = () => {
-        let { pkgName, status, data } = this.state.info
-        return (
-            <React.Fragment>
-                <p className="blue f2">{pkgName}</p>
-                <p className="red di ma2 f1">{status}</p>
-                <p className="red di f3">{data.error}</p>
-            </React.Fragment>
-        )
-    }
-
-    getContent = () => {
-        let { pkgName,
-            description,
-            homepage,
-            latestVersion } = this.state.info
-        return (
-            <React.Fragment>
-                <a href={homepage} className="no-underline" target="_blank" rel="noopener noreferrer">
-                    <p className="blue di f2">{pkgName}</p>
-                </a>
-                <p className="di pv4 ph2 f4">{latestVersion}</p>
-                <p className="f3">{description}</p>
-            </React.Fragment>
-        )
-    }
+    openHomePage = () => this.props.pkg.homePage && window.open(this.props.pkg.homePage, '_blank')
+    copyNameToClipboard = () => Clipboard.setString(this.props.pkg.name)
 }
-
-const styles = {
-    loading: {
-        width: 250,
-        height: 250,
-        margin: 30,
-        padding: 30,
-        alignItems: 'center',
-        display: 'flex',
+const style = StyleSheet.create({
+    content: {
+        justifyContent: 'space-between',
+        padding: 12,
+        margin: 8,
+        borderRadius: 5,
+        minHeight: 150,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    spinnerDims: {
+        height: 150,
+        width: 300,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    cardHeader: {
         flexDirection: 'row',
-        justifyContent: 'center'
-    }
-}
+        justifyContent: 'center',
+        alignItems: 'baseline',
+    },
+    pkgName: {
+        fontSize: 24,
+        color: '#47BBB3'
+    },
+    latestVersion: {
+        marginHorizontal: 4,
+        fontSize: 12,
+    },
+    descriptionContent: {
+        flex: 1,
+        flexGrow: 1,
+        width: 300,
+        paddingTop: 8,
+        paddingStart: 8
+    },
+    description: {
+        fontSize: 20
+    },
+})
