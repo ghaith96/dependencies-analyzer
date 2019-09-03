@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native'
-import PackageManager from './Services/PackageManager';
 import { Header, Footer, CardList, AnalyzeUrlComponent, Loading } from './Components'
 import { WrongUrl, NotFound, GenericError } from './Components/ErrorComponents'
 import constants from './Utils/constants';
+import Repository from './Services/Repository';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -40,12 +40,17 @@ export default class App extends React.Component {
 
     getPackages = async (url) => {
         this.setState({ loading: true, packages: [], error: false })
-        let response = await PackageManager.getPackages(url)
+        let repo = Repository.getInstance()
+
+        let response = await repo.getPackages(url)
         if (response.status) {
             this.setState({ loading: false, error: response })
         } else {
             this.setState({ packagesCount: response.length })
-            await PackageManager.getPackageInfo(response, this.handleNewPackage)
+            for (let pkgName of response) {
+                let pkg = await repo.getPackageInfo(pkgName)
+                this.handleNewPackage(pkg)
+            }
         }
     }
 
