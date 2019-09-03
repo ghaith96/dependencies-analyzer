@@ -3,7 +3,6 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 
 export default class Loading extends React.PureComponent {
     render() {
-        let percentage = Math.floor((this.props.packagesCount / this.props.totalPackages) * 100) || 0
         return (
             <View style={style.content}>
                 <ActivityIndicator size={55} color={'#47BBB3'} />

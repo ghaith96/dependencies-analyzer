@@ -6,10 +6,10 @@ describe('Parser', () => {
         // Arrange
         let toTestUrl = 'https://raw.githubusercontent.com/facebook/react/master/package.json'
 
-        // Act        
+        // Act
         let toTest = getRawGitHubUrl(toTestUrl)
 
-        //Assert
+        // Assert
         expect(toTest).toEqual(expect.stringContaining(expectedUrl))
     })
 
@@ -17,10 +17,10 @@ describe('Parser', () => {
         // Arrange
         let toTestUrl = 'https://github.com/facebook/react/blob/master/package.json'
 
-        // Act        
+        // Act
         let toTest = getRawGitHubUrl(toTestUrl)
 
-        //Assert
+        // Assert
         expect(toTest).toEqual(expect.stringContaining(expectedUrl))
     })
 
@@ -28,10 +28,10 @@ describe('Parser', () => {
         // Arrange
         let toTestUrl = 'https://github.com/facebook/react/'
 
-        // Act        
+        // Act
         let toTest = getRawGitHubUrl(toTestUrl)
 
-        //Assert
+        // Assert
         expect(toTest).toEqual(expect.stringContaining(expectedUrl))
     })
 })
