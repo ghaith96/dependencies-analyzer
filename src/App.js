@@ -4,6 +4,7 @@ import { Header, Footer, CardList, AnalyzeUrlComponent, Loading } from './Compon
 import { WrongUrl, NotFound, GenericError } from './Components/ErrorComponents'
 import constants from './Utils/constants';
 import Repository from './Services/Repository';
+import { packagesSortComparer } from './Utils/utils'
 
 export default class App extends React.Component {
     constructor(props) {
@@ -56,7 +57,7 @@ export default class App extends React.Component {
     handleNewPackage = (pkg) => {
         let stillLoading = (this.state.packages.length + 1 < this.state.packagesCount)
         let packages = [...this.state.packages, pkg]
-        packages = stillLoading ? packages : packages.sort((a, b) => a.description.length - b.description.length)
+        packages = stillLoading ? packages : packages.sort(packagesSortComparer)
         this.setState({ packages, loading: stillLoading })
     }
 
