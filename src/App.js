@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native'
 import { Header, Footer, CardList, AnalyzeUrlComponent, Loading } from './Components'
-import { WrongUrl, NotFound, GenericError } from './Components/ErrorComponents'
-import constants from './Utils/constants';
 import Repository from './Services/Repository';
 import { packagesSortComparer } from './Utils/utils'
+import { getErrorComponent } from './Utils/renderHelpers'
 
 export default class App extends React.Component {
     constructor(props) {
@@ -24,7 +23,7 @@ export default class App extends React.Component {
                 <AnalyzeUrlComponent handleAnalyzeClick={this.getPackages} />
                 {
                     this.state.error ?
-                        this.getErrorComponent()
+                        getErrorComponent(this.state.error)
                         :
                         <React.Fragment>
                             <CardList packages={this.state.packages} loading={this.state.loading} />
@@ -49,7 +48,7 @@ export default class App extends React.Component {
         } else {
             this.setState({ packagesCount: response.length })
             for (let pkgName of response) {
-                repo.getPackageInfo(pkgName).then(this.handleNewPackage, (err) => console.log(err))
+                repo.getPackageInfo(pkgName).then(this.handleNewPackage, console.error)
             }
         }
     }
@@ -59,20 +58,6 @@ export default class App extends React.Component {
         let packages = [...this.state.packages, pkg]
         packages = stillLoading ? packages : packages.sort(packagesSortComparer)
         this.setState({ packages, loading: stillLoading })
-    }
-
-    getErrorComponent = () => {
-        let { status } = this.state.error
-        switch (status) {
-            case constants.ERROR.WRONG_URL:
-                return <WrongUrl />
-            case constants.ERROR.NOT_FOUND:
-                return <NotFound />
-            case constants.ERROR.BAD_REQUEST:
-            default:
-                console.log(`${constants.MESSAGES.SOMETHING_WENT_WRONG} ${JSON.stringify(this.state.error)}`)
-                return <GenericError />
-        }
     }
 }
 
