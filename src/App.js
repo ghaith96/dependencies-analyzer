@@ -48,8 +48,7 @@ export default class App extends React.Component {
         } else {
             this.setState({ packagesCount: response.length })
             for (let pkgName of response) {
-                let pkg = await repo.getPackageInfo(pkgName)
-                this.handleNewPackage(pkg)
+                repo.getPackageInfo(pkgName).then(this.handleNewPackage, (err) => console.log(err))
             }
         }
     }
