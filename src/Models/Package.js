@@ -1,4 +1,4 @@
-export default class packageModel {
+export default class Package {
     constructor(json) {
         let { name, description, homepage, keywords, license } = json
         this.name = name
@@ -11,6 +11,6 @@ export default class packageModel {
     }
 
     static fromResponse(json) {
-        return new packageModel(json)
+        return new Package(json)
     }
 }

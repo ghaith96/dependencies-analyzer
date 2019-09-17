@@ -1,4 +1,4 @@
-import packageModel from "../Models/packageModel";
+import Package from "../Models/Package";
 import { getRawGitHubUrl } from "./UrlParser";
 import constants from "../Utils/constants";
 import Api from '../Api'
@@ -20,7 +20,7 @@ export default class Repository {
 
     getPackageInfoFromApi = async (packageName) => {
         let response = await this._api.getPackageInfo(packageName)
-        return response.status === 200 ? packageModel.fromResponse(response.data) : { ...response, package: packageName }
+        return response.status === 200 ? Package.fromResponse(response.data) : { ...response, package: packageName }
     }
 
     getPackages = async (url) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native'
 import { Header, Footer, CardList, UrlInput, Loading } from './Components'
 import Repository from './Services/Repository';
-import { packagesSortComparer } from './Utils/utils'
+import { packagesComparer } from './Utils/utils'
 import { getErrorComponent } from './Utils/renderHelpers'
 
 export default class App extends React.Component {
@@ -47,16 +47,14 @@ export default class App extends React.Component {
             this.setState({ loading: false, error: response })
         } else {
             this.setState({ packagesCount: response.length })
-            for (let pkgName of response) {
-                repo.getPackageInfo(pkgName).then(this.handleNewPackage, console.error)
-            }
+            response.forEach(pkgName => repo.getPackageInfo(pkgName).then(this.handleNewPackage, console.error))
         }
     }
 
     handleNewPackage = (pkg) => {
         let stillLoading = (this.state.packages.length + 1 < this.state.packagesCount)
         let packages = [...this.state.packages, pkg]
-        packages = stillLoading ? packages : packages.sort(packagesSortComparer)
+        packages = stillLoading ? packages : packages.sort(packagesComparer)
         this.setState({ packages, loading: stillLoading })
     }
 }

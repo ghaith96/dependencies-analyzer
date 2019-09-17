@@ -1,4 +1,4 @@
-export const packagesSortComparer = (a, b) => {
+export const packagesComparer = (a, b) => {
     if (!a.description)
         return -1
     else if (!b.description)
