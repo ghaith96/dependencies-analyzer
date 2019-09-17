@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native'
 
-export default class AnalyzeUrlComponent extends React.Component {
+export default class UrlInput extends React.Component {
     constructor(props) {
         super(props)
         this.state = { url: '' }

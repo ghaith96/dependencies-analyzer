@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native'
-import { Header, Footer, CardList, AnalyzeUrlComponent, Loading } from './Components'
+import { Header, Footer, CardList, UrlInput, Loading } from './Components'
 import Repository from './Services/Repository';
 import { packagesSortComparer } from './Utils/utils'
 import { getErrorComponent } from './Utils/renderHelpers'
@@ -20,7 +20,7 @@ export default class App extends React.Component {
         return (
             <View style={style.content}>
                 <Header />
-                <AnalyzeUrlComponent handleAnalyzeClick={this.getPackages} />
+                <UrlInput handleAnalyzeClick={this.getPackages} />
                 {
                     this.state.error ?
                         getErrorComponent(this.state.error)
