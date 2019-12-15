@@ -4,8 +4,10 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-nativ
 export default class UrlInput extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { url: '' }
+        this.state = { url: this.props.url || '' }
     }
+
+    componentDidMount = () => this.props.url && this.handleAnalyzeClick()
 
     render() {
         return (

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native'
 import { Header, Footer, CardList, UrlInput, Loading } from './Components'
 import Repository from './Services/Repository';
-import { packagesComparer } from './Utils/utils'
+import { packagesComparer, isValidUrl } from './Utils/utils'
 import { getErrorComponent } from './Utils/renderHelpers'
 import ReactMarkDown from 'react-markdown'
 
@@ -18,6 +18,7 @@ export default class App extends React.Component {
     }
 
     render() {
+        let url = this.tryParseUrl()
         let percentage = Math.floor((this.state.packages.length / this.state.packagesCount) * 100) || 0
         return (
             <View style={style.content}>
@@ -26,7 +27,7 @@ export default class App extends React.Component {
                     !this.state.loading &&
                     <ReactMarkDown source={this.state.packages[0] ? this.state.packages[0].readme : ''} />
                 }
-                <UrlInput handleAnalyzeClick={this.getPackages} />
+                <UrlInput url={url} handleAnalyzeClick={this.getPackages} />
                 {
                     this.state.error ?
                         getErrorComponent(this.state.error)
@@ -62,6 +63,11 @@ export default class App extends React.Component {
         let packages = [...this.state.packages, pkg]
         packages = stillLoading ? packages : packages.sort(packagesComparer)
         this.setState({ packages, loading: stillLoading })
+    }
+
+    tryParseUrl = () => {
+        let url = window.location.pathname.replace('/', '') + '/'
+        return isValidUrl(url)
     }
 }
 
