@@ -4,10 +4,11 @@
   "private": true,
   "homepage": "https://ghaith96.github.io/dependencies-analyzer",
   "dependencies": {
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-markdown": "^4.2.2",
     "react-native-web": "^0.11.7",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
