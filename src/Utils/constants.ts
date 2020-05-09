@@ -5,7 +5,7 @@ export default {
         GITHUB_RAW: /raw.githubusercontent\.com\/(?:.*){4}\/package.json/i
     },
     ERROR: {
-        WRONG_URL: 'wrong url',
+        WRONG_URL_FORMAT: 500,
         NOT_FOUND: 404,
         BAD_REQUEST: 400
     },

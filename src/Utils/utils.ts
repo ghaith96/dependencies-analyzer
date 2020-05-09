@@ -1,6 +1,7 @@
 import constants from "./constants"
+import { Package } from "../Models/Package"
 
-export const packagesComparer = (a, b) => {
+export const packagesComparer = (a: Package, b: Package) => {
     if (!a.description)
         return -1
     else if (!b.description)
@@ -8,7 +9,7 @@ export const packagesComparer = (a, b) => {
     return (a.description.length - b.description.length)
 }
 
-export const isValidUrl = (url) => {
+export const isValidUrl = (url: string) => {
     if (url.match(constants.REGEX.GITHUB_RAW) ||
         url.match(constants.REGEX.GITHUB_PACKAGE_FILE) ||
         url.match(constants.REGEX.GITHUB_REPO)) {
