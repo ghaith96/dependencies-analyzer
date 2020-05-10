@@ -1,4 +1,4 @@
-export interface Package {
+export type Package = {
     name: string;
     authorName: string;
     description: string;

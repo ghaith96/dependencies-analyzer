@@ -1,14 +1,14 @@
 import React from 'react'
-import constants from "./constants"
 import { WrongUrl, NotFound, GenericError } from "../Components/ErrorComponents"
+import { AppError } from './types';
 
-export const getErrorComponent = (errorCode: number) => {
-    switch (errorCode) {
-        case constants.ERROR.WRONG_URL_FORMAT:
+export const getErrorComponent = (error: AppError) => {
+    switch (error) {
+        case AppError.WRONG_URL_FORMAT:
             return <WrongUrl />
-        case constants.ERROR.NOT_FOUND:
+        case AppError.NOT_FOUND:
             return <NotFound />
-        case constants.ERROR.BAD_REQUEST:
+        case AppError.BAD_REQUEST:
         default:
             return <GenericError />
     }

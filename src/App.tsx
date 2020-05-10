@@ -5,13 +5,9 @@ import { repositoryService } from './Services/Repository';
 import { packagesComparer, isValidUrl } from './Utils/utils';
 import { getErrorComponent } from './Utils/renderHelpers';
 import { Package } from './Models/Package';
-import { Response } from './Api/Api';
+import { Response } from './Api/types';
 import { getRawGitHubUrl } from './Services/UrlParser';
-import constants from './Utils/constants';
-
-interface IProps {
-
-}
+import { AppError } from './Utils/types';
 
 interface IState {
     loading: boolean;
@@ -20,8 +16,8 @@ interface IState {
     packagesCount: number;
 }
 
-export default class App extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+export default class App extends React.Component<{}, IState> {
+    constructor(props: never) {
         super(props)
         this.state = {
             loading: false,
@@ -32,13 +28,13 @@ export default class App extends React.Component<IProps, IState> {
     }
 
     render() {
-        const url = this.tryParseUrl()
-        const percentage = Math.floor((this.state.packages.length / this.state.packagesCount) * 100) || 0
+        const url = this.tryParseUrl();
+        const percentage = Math.floor((this.state.packages.length / this.state.packagesCount) * 100) || 0;
         const { loading, lastError } = this.state;
         return (
             <View style={style.content}>
                 <Header />
-                <UrlInput urlProp={url} handleAnalyzeClick={this.getPackages} />
+                <UrlInput loading={loading} urlProp={url} handleAnalyzeClick={this.getPackages} />
                 {
                     lastError >= 0 ?
                         getErrorComponent(lastError)
@@ -60,7 +56,7 @@ export default class App extends React.Component<IProps, IState> {
         if (rawUrl) {
             await this.fetchPackages(rawUrl);
         } else {
-            this.setState({ loading: false, packages: [], lastError: constants.ERROR.WRONG_URL_FORMAT });
+            this.setState({ loading: false, packages: [], lastError: AppError.WRONG_URL_FORMAT });
         }
     }
 

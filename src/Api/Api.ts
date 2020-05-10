@@ -1,16 +1,4 @@
-type ResponseSuccess<T> = {
-    ok: true;
-    status: number;
-    data: T
-}
-
-type ResponseError = {
-    ok: false;
-    status: number;
-    data: Error;
-}
-
-export type Response<T> = ResponseSuccess<T> | ResponseError;
+import { Response } from './types';
 
 export interface IApi {
     getPackageInfo: <T>(pkgName: string) => Promise<Response<T>>;
@@ -23,7 +11,7 @@ class Api implements IApi {
         const options = { headers: { 'Sec-Fetch-Mode': 'cors' } };
         const response: any = await this.doRequest<T>(url, options);
         response.data = response.data.collected.metadata;
-        return response;
+        return response as T;
     }
 
     getPackages = async <T>(url: string) => {

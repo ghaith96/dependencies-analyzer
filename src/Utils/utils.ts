@@ -1,4 +1,4 @@
-import constants from "./constants"
+import { REGEX } from "./constants"
 import { Package } from "../Models/Package"
 
 export const packagesComparer = (a: Package, b: Package) => {
@@ -10,9 +10,9 @@ export const packagesComparer = (a: Package, b: Package) => {
 }
 
 export const isValidUrl = (url: string) => {
-    if (url.match(constants.REGEX.GITHUB_RAW) ||
-        url.match(constants.REGEX.GITHUB_PACKAGE_FILE) ||
-        url.match(constants.REGEX.GITHUB_REPO)) {
+    if (url.match(REGEX.GITHUB_RAW) ||
+        url.match(REGEX.GITHUB_PACKAGE_FILE) ||
+        url.match(REGEX.GITHUB_REPO)) {
         return url
     }
     return ''

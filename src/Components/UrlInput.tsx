@@ -3,10 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-nativ
 
 interface IProps {
     urlProp: string;
+    loading: boolean;
     handleAnalyzeClick: (url: string) => void;
 }
 
-export const UrlInput: React.FC<IProps> = ({ urlProp, handleAnalyzeClick }) => {
+export const UrlInput: React.FC<IProps> = ({ urlProp, handleAnalyzeClick, loading }) => {
     const [url, setUrl] = useState(urlProp);
 
     useEffect(() => { urlProp && handleAnalyzeClick(url); });
@@ -25,7 +26,7 @@ export const UrlInput: React.FC<IProps> = ({ urlProp, handleAnalyzeClick }) => {
             />
             <TouchableOpacity
                 style={style.button}
-                disabled={!url.trim()}
+                disabled={(!url.trim() || loading)}
                 onPress={onClick}>
                 <Text style={style.buttonText}>Analyze</Text>
             </TouchableOpacity>

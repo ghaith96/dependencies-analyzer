@@ -1,7 +1,8 @@
 import { Package } from "../Models/Package";
 import { getRawGitHubUrl } from "./UrlParser";
-import constants from "../Utils/constants";
-import { IApi, Response, apiInstance } from '../Api/Api'
+import { IApi, Response, apiInstance } from '../Api'
+import { RepoPackages } from "./types";
+import { AppError } from "../Utils/types";
 
 interface IRepository {
     getPackageInfo: (packageName: string) => Promise<Response<Package>>;
@@ -30,7 +31,7 @@ class Repository implements IRepository {
         return response;
     }
 
-    getPackages = async (url: string): Promise<Response<{ dependencies: object }>> => {
+    getPackages = async (url: string): Promise<Response<RepoPackages>> => {
         const cachedItem: string | null = this.cache.getItem(url);
 
         if (cachedItem) {
@@ -38,7 +39,7 @@ class Repository implements IRepository {
             return { ok: true, status: 200, data: items };
         }
 
-        const response = await this.apiService.getPackages<{ dependencies: object }>(url);
+        const response = await this.apiService.getPackages<RepoPackages>(url);
 
         if (response.ok) {
             this.cache.setItem(url, JSON.stringify(response.data));
@@ -51,9 +52,9 @@ class Repository implements IRepository {
         const rawUrl = getRawGitHubUrl(url);
 
         if (!rawUrl)
-            return { status: constants.ERROR.WRONG_URL_FORMAT };
+            return { status: AppError.WRONG_URL_FORMAT };
 
-        const response = await this.apiService.getPackages<{ depenencies: object }>(rawUrl);
+        const response = await this.apiService.getPackages<RepoPackages>(rawUrl);
 
         return response.data;
     }
