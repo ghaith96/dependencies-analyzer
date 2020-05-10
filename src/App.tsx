@@ -82,7 +82,7 @@ export default class App extends React.Component<{}, IState> {
     }
 
     tryParseUrl = () => {
-        let url = window.location.pathname.replace('/', '') + '/';
+        const url = window.location.pathname.replace('/', '') + '/';
         return isValidUrl(url);
     }
 }
