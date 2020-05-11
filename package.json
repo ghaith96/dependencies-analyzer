@@ -4,10 +4,11 @@
   "private": true,
   "homepage": "https://ghaith96.github.io/dependencies-analyzer",
   "dependencies": {
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-native-web": "^0.11.7",
-    "react-scripts": "3.1.1"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-markdown": "^4.3.1",
+    "react-native-web": "^0.12.2",
+    "react-scripts": "3.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,6 +34,11 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.1.1"
+    "@types/node": "^13.13.5",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "@types/react-native": "^0.62.7",
+    "gh-pages": "^2.1.1",
+    "typescript": "^3.8.3"
   }
 }
