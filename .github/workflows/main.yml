@@ -27,5 +27,5 @@ jobs:
       with:
         node-version: 12.10
     - run: npm install
-    - run: npm run deploay --if-preset
+    - run: npm run deploy --if-preset
       
