@@ -1,27 +1,26 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import styled from 'styled-components';
 
 export const Header: React.FC = () => {
     return (
-        <View style={style.content}>
-            <Text style={style.header}>Dependencies Analyzer</Text>
-            <Text style={style.description}>get fast insight into any NodeJs project on GitHub by peeking at its dependencies</Text>
-        </View>
+        <Content>
+            <Title>Dependencies Analyzer</Title>
+            <Description>get fast insight into any NodeJs project on GitHub by peeking at its dependencies</Description>
+        </Content>
     );
 }
 
-const style = StyleSheet.create({
-    content: {
-        alignItems: 'center'
-    },
-    header: {
-        fontSize: 25,
-        color: '#47BBB3'
-    },
-    description: {
-        fontSize: 20,
-        marginVertical: 4,
-        marginStart: 8,
-        color: '#1A535C'
-    }
-})
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+const Title = styled.p`
+    font-size: 2em;
+    color: #47BBB3;
+`
+const Description = styled.div`
+    font-size: 1.2em;
+    padding-left:4px;
+    padding-right: 4px;
+`
