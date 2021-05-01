@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import styled from 'styled-components';
 
 interface IProps {
     percentage: number;
@@ -7,21 +7,19 @@ interface IProps {
 
 export const Loading: React.FC<IProps> = ({ percentage }) => {
     return (
-        <View style={style.content}>
-            <ActivityIndicator size={55} color={'#47BBB3'} />
-            <Text style={style.percentage}>{percentage}%</Text>
-        </View>
+        <Content>
+            <Percentage>LOADING... {percentage}%</Percentage>
+        </Content>
     );
 }
 
-const style = StyleSheet.create({
-    content: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    percentage: {
-        fontSize: 25,
-        marginHorizontal: 16
-    }
-})
+const Content = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Percentage = styled.div`
+    font-size: 15px;
+    margin: 0px 16px;
+`;

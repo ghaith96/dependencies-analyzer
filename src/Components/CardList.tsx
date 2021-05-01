@@ -1,5 +1,6 @@
 import React from 'react'
-import { FlatList } from 'react-native';
+import styled from 'styled-components';
+
 import { Card } from './Card';
 import { Package } from '../Models/Package';
 
@@ -10,14 +11,17 @@ interface IProps {
 export const CardList: React.FC<IProps> = ({ packages }) => {
 
     return (
-        <FlatList
-            data={packages}
-            style={{ margin: 16 }}
-            contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }}
-            renderItem={({ item }: { item: Package }) => <Card key={item.name} pkg={item} />}
-            numColumns={5}
-            centerContent
-            bounces
-        />
+        <Content>
+            {
+                packages?.map(pkg => <Card key={pkg.name} pkg={pkg} />)
+            }
+        </Content>
     );
 }
+
+const Content = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+`;

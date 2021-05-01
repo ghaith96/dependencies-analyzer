@@ -1,44 +1,22 @@
 {
-  "name": "pkg-depends-analyzer",
-  "version": "0.1.0",
-  "private": true,
-  "homepage": "https://ghaith96.github.io/dependencies-analyzer",
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-markdown": "^4.3.1",
-    "react-native-web": "^0.12.2",
-    "react-scripts": "3.4.1"
-  },
+  "name": "dependencies-analyzer",
+  "version": "0.0.0",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -b gh-pages -d build"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "styled-components": "^5.2.3"
   },
   "devDependencies": {
-    "@types/node": "^13.13.5",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
-    "@types/react-native": "^0.62.7",
-    "gh-pages": "^2.1.1",
-    "typescript": "^3.8.3"
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/styled-components": "^5.1.9",
+    "@vitejs/plugin-react-refresh": "^1.3.1",
+    "typescript": "^4.1.2",
+    "vite": "^2.2.3"
   }
 }

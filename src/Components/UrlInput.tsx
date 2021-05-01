@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import styled from 'styled-components';
 
 interface IProps {
     urlProp: string;
@@ -8,58 +8,69 @@ interface IProps {
 }
 
 export const UrlInput: React.FC<IProps> = ({ urlProp, handleAnalyzeClick, loading }) => {
-    const [url, setUrl] = useState(urlProp);
+    const [url, setUrl] = useState<string>(urlProp);
 
     useEffect(() => { urlProp && handleAnalyzeClick(url); });
 
     const onClick = () => url && handleAnalyzeClick(url);
 
     return (
-        <View style={style.content}>
-            <TextInput
-                style={style.textInput}
-                textContentType={"URL"}
-                value={url}
-                onChangeText={(url) => setUrl(url)}
-                onSubmitEditing={onClick}
+        <Content>
+            <Input
+                type={"URL"}
+                onChange={({ currentTarget: { value: url } }) => setUrl(url)}
+                onSubmit={onClick}
                 placeholder="Example: https://github.com/ghaith96/dependencies-analyzer"
             />
-            <TouchableOpacity
-                style={style.button}
+            <Button
                 disabled={(!url.trim() || loading)}
-                onPress={onClick}>
-                <Text style={style.buttonText}>Analyze</Text>
-            </TouchableOpacity>
-        </View>
+                onClick={onClick}
+            >
+                Analyze
+            </Button>
+        </Content>
     );
 }
 
-const style = StyleSheet.create({
-    content: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 4,
-        margin: 12,
-    },
-    textInput: {
-        flex: 0.8,
-        padding: 8,
-        fontSize: 18,
-        lineHeight: 4,
-        borderRadius: 5,
-        borderColor: '#32908F',
-        borderWidth: 1,
-    },
-    button: {
-        marginStart: 8,
-        padding: 10,
-        borderRadius: 5,
-        backgroundColor: '#4ECDC4'
-    },
-    buttonText: {
-        color: '#F1F7EE',
-        fontSize: 18
-    },
-});
+const Content = styled.div`
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+    margin: 12px;
+`;
+
+const Input = styled.input`
+    flex: 0.8;
+    padding: 4px;
+    font-size: 18px;
+    line-height: 4px;
+    border-radius: 4px;
+    border: 1px solid #32908F;
+    user-select: all;
+`;
+
+const Button = styled.button`
+    font-size: 18px;
+    border-radius: 4px;
+    margin-left: 8px;
+    padding: 4px 24px;
+    background: #1e6f5c;
+    color: white;
+    transition: box-shadow 0.3s, background 0.5s, color 0.5s;
+    user-select: none;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    
+    &:disabled {
+        color: black;
+        background: lightgrey;
+        box-shadow: unset;
+    }
+
+    &:hover:enabled {
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+        cusror: not-allowed;
+    }
+`;

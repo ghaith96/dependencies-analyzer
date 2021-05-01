@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import styled from 'styled-components';
+
 import { Header, Footer, CardList, UrlInput, Loading } from './Components';
 import { repositoryService } from './Services/Repository';
-import { packagesComparer, isValidUrl } from './Utils/utils';
+import { isValidUrl } from './Utils/utils';
 import { getErrorComponent } from './Utils/renderHelpers';
 import { Package } from './Models/Package';
 import { Response } from './Api/types';
@@ -32,20 +33,22 @@ export default class App extends React.Component<{}, IState> {
         const percentage = Math.floor((this.state.packages.length / this.state.packagesCount) * 100) || 0;
         const { loading, lastError } = this.state;
         return (
-            <View style={style.content}>
-                <Header />
-                <UrlInput loading={loading} urlProp={url} handleAnalyzeClick={this.getPackages} />
-                {
-                    lastError >= 0 ?
-                        getErrorComponent(lastError)
-                        :
-                        <>
-                            <CardList packages={this.state.packages} />
-                            {loading && <Loading percentage={percentage} />}
-                        </>
-                }
+            <Content>
+                <div>
+                    <Header />
+                    <UrlInput loading={loading} urlProp={url} handleAnalyzeClick={this.getPackages} />
+                    {
+                        lastError >= 0 ?
+                            getErrorComponent(lastError)
+                            :
+                            <>
+                                <CardList packages={this.state.packages} />
+                                {loading && <Loading percentage={percentage} />}
+                            </>
+                    }
+                </div>
                 <Footer />
-            </View>
+            </Content>
         );
     }
 
@@ -74,10 +77,7 @@ export default class App extends React.Component<{}, IState> {
     handleNewPackage = (response: Response<Package>) => {
         if (response.ok) {
             const pkg = response.data;
-            const stillLoading = (this.state.packages.length + 1 < this.state.packagesCount);
-            let packages = [...this.state.packages, pkg];
-            packages = stillLoading ? packages : packages.sort(packagesComparer);
-            this.setState({ packages, loading: stillLoading });
+            this.setState((prevState: IState) => ({ packages: [...prevState.packages, pkg], loading: prevState.packages.length + 1 < prevState.packagesCount }));
         }
     }
 
@@ -87,9 +87,10 @@ export default class App extends React.Component<{}, IState> {
     }
 }
 
-const style = StyleSheet.create({
-    content: {
-        margin: 8,
-        justifyContent: 'space-between'
-    }
-})
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 98vh;
+    margin: 8px;
+`;

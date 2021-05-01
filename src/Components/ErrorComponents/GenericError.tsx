@@ -1,28 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
+import styled from 'styled-components';
 
 export const GenericError: React.FC = () => {
     return (
-        <View style={style.content}>
-            <Text style={style.header}><span role='img' aria-label='sorry'>😓</span> Something went wrong somewhere..</Text>
-            <Text style={style.description}>SORRY! This shouldn't be happening.</Text>
-        </View>
+        <Content>
+            <Title><span role='img' aria-label='sorry'>😓</span> Something went wrong somewhere..</Title>
+            <Description>SORRY! This shouldn't be happening.</Description>
+        </Content>
     );
 }
 
-const style = StyleSheet.create({
-    content: {
-        alignItems: 'center',
-        marginVertical: 16
-    },
-    header: {
-        fontSize: 35,
-        color: '#FF6B6B'
-    },
-    description: {
-        marginHorizontal: 8,
-        fontSize: 20,
-        marginVertical: 8
-    }
-});
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 16px 0px;
+`;
+
+const Title = styled.div`
+    font-size: 35px;
+    color: #FF6B6B;
+`;
+
+const Description = styled.div`
+    margin: 8px;
+    font-size: 20px;
+`;
