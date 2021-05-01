@@ -1,33 +1,33 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import styled from 'styled-components';
 
 export const Footer: React.FC = () => {
     const goToMyGithub = () => window.open('https://github.com/ghaith96', '_blank');
 
     return (
-        <View style={style.content}>
-            <Text style={style.madeWith}>Made with <span role='img' aria-label='heart'>💖</span> by </Text>
-            <TouchableOpacity onPress={goToMyGithub}>
-                <Text style={style.myName}>ghaith</Text>
-            </TouchableOpacity>
-        </View>
+        <Content>
+            <Msg>Made with <span role='img' aria-label='heart'>💖</span> by </Msg>
+            <BoldText onClick={goToMyGithub}>ghaith</BoldText>
+        </Content>
     );
-
 }
 
-const style = StyleSheet.create({
-    content: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'baseline',
-        marginTop: 8
-    },
-    madeWith: {
-        fontSize: 18
-    },
-    myName: {
-        color: '#5475AB',
-        fontSize: 18,
-        fontWeight: '600'
-    }
-})
+const Content = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin-top: 8px;
+    user-select: none;
+`;
+
+const Msg = styled.div`
+    font-size: 18px;
+`;
+
+const BoldText = styled.div`
+    color: #5475AB;
+    font-size: 18px;
+    font-weight 600;
+    padding-left: 4px;
+    cursor: pointer;
+`;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Clipboard } from 'react-native';
+import styled from 'styled-components';
+
 import { Package } from '../Models/Package';
 
 interface IProps {
@@ -9,67 +10,66 @@ interface IProps {
 export const Card: React.FC<IProps> = ({ pkg }) => {
     const { name, homePage, latestVersion, description } = pkg;
     const openHomePage = () => homePage && window.open(homePage, '_blank');
-    const copyNameToClipboard = () => Clipboard.setString(name);
+    const copyNameToClipboard = () => window.navigator.clipboard.writeText(name);
 
     return (
-        <View style={style.content}>
-            <View style={style.cardHeader}>
-                <TouchableOpacity onPress={openHomePage} onLongPress={copyNameToClipboard}>
-                    <Text style={style.pkgName}>{name}</Text>
-                </TouchableOpacity>
-                <Text style={style.latestVersion}>{latestVersion}</Text>
-            </View>
-            <View style={style.descriptionContent}>
-                <Text style={style.description}>{description}</Text>
-            </View>
-        </View>
-
+        <Content>
+            <Header>
+                <div
+                    onClick={openHomePage}
+                    onDoubleClick={copyNameToClipboard}
+                >
+                    <PkgName>{name}</PkgName>
+                </div>
+                <Version>{latestVersion}</Version>
+            </Header>
+            <DescriptionContent>
+                <DescriptionText>{description}</DescriptionText>
+            </DescriptionContent>
+        </Content>
     );
 }
 
-const style = StyleSheet.create({
-    content: {
-        justifyContent: 'space-between',
-        padding: 12,
-        margin: 8,
-        borderRadius: 5,
-        minHeight: 150,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    spinnerDims: {
-        height: 150,
-        width: 300,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    cardHeader: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'baseline',
-    },
-    pkgName: {
-        fontSize: 24,
-        color: '#47BBB3'
-    },
-    latestVersion: {
-        marginHorizontal: 4,
-        fontSize: 12,
-    },
-    descriptionContent: {
-        flex: 1,
-        flexGrow: 1,
-        width: 300,
-        paddingTop: 8,
-        paddingStart: 8
-    },
-    description: {
-        fontSize: 20
-    },
-});
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12px;
+    margin: 8px;
+    border-radius: 8px;
+    min-height: 150px;
+    transition: box-shadow 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    &:hover {
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    }
+`;
+
+const Header = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+`;
+
+const PkgName = styled.div`
+    font-size: 24px;
+    color: #47BBB2;
+`;
+
+const Version = styled.div`
+    margin: 0px 4px;
+    font-size: 12px;
+`;
+
+const DescriptionContent = styled.div`
+    flex: 1;
+    flex-grow: 1;
+    width: 300px;
+    padding-top: 8px;
+    padding-left: 8px;
+`;
+
+const DescriptionText = styled.div`
+    font-size: 12px;
+`;
