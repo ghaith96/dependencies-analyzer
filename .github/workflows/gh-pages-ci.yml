@@ -1,0 +1,41 @@
+name: Update GitHub Pages
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Set Git Config
+        run: |
+            git config --global user.name "ghaith96"
+            git config --global user.email "ghaithjardane@gmail.com"
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: build 🛠
+        run: |
+            npm install
+            npm run build
+
+      - name: Deploy GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: dist
+
