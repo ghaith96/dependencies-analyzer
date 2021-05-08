@@ -1,8 +1,5 @@
-import { Package } from "../Models/Package";
-import { getRawGitHubUrl } from "./UrlParser";
-import { IApi, Response, apiInstance } from '../Api'
+import { IApi, Response, apiInstance, Package } from '../Api'
 import { RepoPackages } from "./types";
-import { AppError } from "../Utils/types";
 
 interface IRepository {
     getPackageInfo: (packageName: string) => Promise<Response<Package>>;
@@ -46,17 +43,6 @@ class Repository implements IRepository {
         }
 
         return response;
-    }
-
-    getPackagesFromApi = async (url: string) => {
-        const rawUrl = getRawGitHubUrl(url);
-
-        if (!rawUrl)
-            return { status: AppError.WRONG_URL_FORMAT };
-
-        const response = await this.apiService.getPackages<RepoPackages>(rawUrl);
-
-        return response.data;
     }
 }
 

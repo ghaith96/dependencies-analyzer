@@ -1,30 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface IProps {
-    urlProp: string;
-    loading: boolean;
-    handleAnalyzeClick: (url: string) => void;
+    disabled: boolean;
+    url: string;
+    setUrl: (url: string) => void;
+    onSubmit: () => void;
 }
 
-export const UrlInput: React.FC<IProps> = ({ urlProp, handleAnalyzeClick, loading }) => {
-    const [url, setUrl] = useState<string>(urlProp);
-
-    useEffect(() => { urlProp && handleAnalyzeClick(url); });
-
-    const onClick = () => url && handleAnalyzeClick(url);
-
+export const UrlInputComponent: React.FC<IProps> = ({ disabled, url, setUrl, onSubmit }) => {
     return (
         <Content>
             <Input
+                defaultValue={url}
                 type={"URL"}
                 onChange={({ currentTarget: { value: url } }) => setUrl(url)}
-                onSubmit={onClick}
+                onSubmit={onSubmit}
                 placeholder="Example: https://github.com/ghaith96/dependencies-analyzer"
             />
             <Button
-                disabled={(!url.trim() || loading)}
-                onClick={onClick}
+                disabled={disabled}
+                onClick={onSubmit}
             >
                 Analyze
             </Button>

@@ -30,6 +30,7 @@ const Msg = styled.div`
 const Status = styled.div`
     color: #FF6B6B;
     font-size: 35px;
+    padding-left: 8px;
 `;
 
 const Header = styled.div`

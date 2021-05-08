@@ -1,31 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Package } from '../Models/Package';
+import { Package } from 'src/Api/types';
 
 interface IProps {
     pkg: Package;
+    onPackageNameClick: () => void;
+    onPackageNameDoubleClick: () => void;
 }
 
-export const Card: React.FC<IProps> = ({ pkg }) => {
-    const { name, homePage, latestVersion, description } = pkg;
-    const openHomePage = () => homePage && window.open(homePage, '_blank');
-    const copyNameToClipboard = () => window.navigator.clipboard.writeText(name);
+export const CardComponent: React.FC<IProps> = ({ pkg, onPackageNameClick, onPackageNameDoubleClick }: IProps) => {
+    const { name, version, description } = pkg.collected?.metadata ?? {};
 
     return (
         <Content>
             <Header>
-                <div
-                    onClick={openHomePage}
-                    onDoubleClick={copyNameToClipboard}
-                >
-                    <PkgName>{name}</PkgName>
-                </div>
-                <Version>{latestVersion}</Version>
+                {
+                    name && (
+                        <div
+                            onClick={onPackageNameClick}
+                            onDoubleClick={onPackageNameDoubleClick}
+                        >
+                            <PkgName>{name}</PkgName>
+                        </div>
+                    )
+                }
+                {version && <Version>{version}</Version>}
             </Header>
-            <DescriptionContent>
-                <DescriptionText>{description}</DescriptionText>
-            </DescriptionContent>
+            {
+                description && (
+                    <DescriptionContent>
+                        <DescriptionText>{description}</DescriptionText>
+                    </DescriptionContent>
+                )
+            }
         </Content>
     );
 }
@@ -55,6 +63,7 @@ const Header = styled.div`
 const PkgName = styled.div`
     font-size: 24px;
     color: #47BBB2;
+    cursor: pointer;
 `;
 
 const Version = styled.div`
