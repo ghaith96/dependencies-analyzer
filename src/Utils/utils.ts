@@ -1,16 +1,16 @@
+import { Package } from "src/Api/types";
 import { REGEX } from "./constants"
-import { Package } from "../Models/Package"
 
 export const packagesComparer = (a: Package, b: Package) => {
-    if (!a.description) {
+    if (!a.collected?.metadata?.description) {
         return -1;
     }
 
-    if (!b.description) {
+    if (!b.collected?.metadata?.description) {
         return 1;
     }
 
-    return (a.description.length - b.description.length);
+    return (a.collected.metadata.description.length - b.collected.metadata.description.length);
 }
 
 export const isValidUrl = (url: string) => {

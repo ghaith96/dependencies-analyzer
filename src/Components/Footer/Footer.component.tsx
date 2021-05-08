@@ -1,13 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const Footer: React.FC = () => {
-    const goToMyGithub = () => window.open('https://github.com/ghaith96', '_blank');
+interface IProps {
+    onMyNameClick: () => void;
+}
+
+export const FooterComponent: React.FC<IProps> = (props: IProps) => {
 
     return (
         <Content>
             <Msg>Made with <span role='img' aria-label='heart'>💖</span> by </Msg>
-            <BoldText onClick={goToMyGithub}>ghaith</BoldText>
+            <BoldText onClick={props.onMyNameClick}>ghaith</BoldText>
         </Content>
     );
 }
