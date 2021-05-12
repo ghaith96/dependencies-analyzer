@@ -1,20 +1,28 @@
-import { Response } from './types';
+import { PackageJson, Response, Package } from './types';
 
 export interface IApi {
-    getPackageInfo: <T>(pkgName: string) => Promise<Response<T>>;
-    getPackages: <T>(url: string) => Promise<Response<T>>;
+    getPackagesInfo: (packages: string[]) => Promise<Response<{ [key: string]: Package }>>;
+    getPackages: (url: string) => Promise<Response<PackageJson>>;
 }
 
 class Api implements IApi {
-    getPackageInfo = async <T>(pkgName: string) => {
-        const url = `https://api.npms.io/v2/package/${pkgName}`;
-        const options = { headers: { 'Sec-Fetch-Mode': 'cors' } };
+    getPackagesInfo = async <T>(packages: string[]) => {
+        const url = `https://api.npms.io/v2/package/mget`;
+        const options: RequestInit = {
+            method: 'POST',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                'Sec-Fetch-Mode': 'cors',
+            },
+            body: JSON.stringify(packages),
+        };
         const response: any = await this.doRequest<T>(url, options);
         return response as T;
     }
 
-    getPackages = async <T>(url: string) => {
-        return await this.doRequest<T>(url);
+    getPackages = async (url: string): Promise<Response<PackageJson>> => {
+        return await this.doRequest<PackageJson>(url);
     }
 
     doRequest = async <T>(url: string, options?: RequestInit): Promise<Response<T>> => {

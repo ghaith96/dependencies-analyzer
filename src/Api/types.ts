@@ -6,6 +6,7 @@ export type Response<T> = {
 
 export interface Package {
     analyzedAt: string;
+    currentVersion: string;
     collected: {
         metadata: {
             name: string,
@@ -110,4 +111,12 @@ export interface DateRangeCount {
 export interface User {
     username: string;
     email?: string;
+}
+
+export interface PackageJson {
+    name: string;
+    version: string;
+    scripts: { [key: string]: string };
+    dependencies: { [key: string]: string }
+    devDependencies?: { [key: string]: string }
 }

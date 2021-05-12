@@ -5,7 +5,7 @@ import { Card } from './Card';
 import { Package } from 'src/Api/types';
 
 interface IProps {
-    packages: Package[];
+    packages: { [key: string]: Package };
 }
 
 export const CardList: React.FC<IProps> = ({ packages }) => {
@@ -13,7 +13,7 @@ export const CardList: React.FC<IProps> = ({ packages }) => {
     return (
         <Content>
             {
-                packages?.map(pkg => <Card key={pkg.collected.metadata.name} pkg={pkg} />)
+                Object.values(packages).map(pkg => <Card key={pkg.collected.metadata.name} pkg={pkg} />)
             }
         </Content>
     );
