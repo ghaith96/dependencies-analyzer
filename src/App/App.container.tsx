@@ -1,31 +1,25 @@
 import React, { useState } from 'react';
-import { repositoryService } from '../Services/Repository';
+import { apiInstance } from '../Api';
 import { getRawGitHubUrl } from '../Services/UrlParser';
 import { AppError } from '../Utils/types';
 import { isValidUrl } from '../Utils/utils';
-import { Package, Response } from '../Api/types';
+import { Package } from '../Api/types';
 import { AppComponent } from './App.component';
 
 interface IState {
     loading: boolean;
     error: number;
-    totalPackagesCount: number;
-    packages: Package[];
+    packages: { [key: string]: Package };
 }
 
 const INITIAL_STATE: IState = {
     loading: false,
     error: 0,
-    totalPackagesCount: 0,
-    packages: [],
+    packages: {},
 };
 
 export const AppContainer: React.FC = () => {
     const [state, setState] = useState<IState>(INITIAL_STATE);
-
-    const getDonePercentage = () => {
-        return Math.floor((state.packages.length / state.totalPackagesCount) * 100) || 0;
-    }
 
     const getPackages = async (url: string) => {
         setState(INITIAL_STATE);
@@ -39,29 +33,28 @@ export const AppContainer: React.FC = () => {
     }
 
     const fetchPackages = async (url: string) => {
-        const response = await repositoryService.getPackages(url);
+        const response = await apiInstance.getPackages(url);
 
         if (response.ok) {
-            const dependencies = Object.keys(response.data.dependencies);
+            const dependencies = Object.keys(response.data.dependencies ?? {});
 
             setState((prevState: IState) => ({
                 ...prevState,
-                totalPackagesCount: dependencies.length,
-                loading: dependencies.length > 0
+                loading: dependencies.length > 0,
             }));
 
-            const dependenciesPromises = dependencies.map(name => repositoryService.getPackageInfo(name).then(handleNewPackage, console.error));
+            const dependenciesInfo = await apiInstance.getPackagesInfo(dependencies);
 
-            Promise.all(dependenciesPromises).then(() => setState((prevState: IState) => ({ ...prevState, loading: false })));
+            Object.entries(dependenciesInfo.data).forEach(([name, pkg]) => pkg.currentVersion = response.data.dependencies[name]);
+
+            setState((prevState: IState) => ({
+                ...prevState,
+                loading: false,
+                packages: dependenciesInfo.data,
+            }));
+
         } else {
             setState({ ...INITIAL_STATE, error: response.status });
-        }
-    }
-
-    const handleNewPackage = (response: Response<Package>) => {
-        if (response.ok) {
-            const pkg = response.data;
-            setState((prevState: IState) => ({ ...prevState, packages: [...prevState.packages, pkg] }));
         }
     }
 
@@ -76,7 +69,6 @@ export const AppContainer: React.FC = () => {
             error={state.error}
             packages={state.packages}
             url={tryParseUrl()}
-            donePercentage={getDonePercentage()}
             onAnalyzeClick={getPackages}
         />
     );

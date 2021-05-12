@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Package } from 'src/Api/types';
-
 interface IProps {
-    pkg: Package;
+    name: string;
+    version: string;
+    description: string;
     onPackageNameClick: () => void;
     onPackageNameDoubleClick: () => void;
 }
 
-export const CardComponent: React.FC<IProps> = ({ pkg, onPackageNameClick, onPackageNameDoubleClick }: IProps) => {
-    const { name, version, description } = pkg.collected?.metadata ?? {};
+export const CardComponent: React.FC<IProps> = ({ name, version, description, onPackageNameClick, onPackageNameDoubleClick }: IProps) => {
 
     return (
         <Content>

@@ -2,19 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Package } from 'src/Api/types';
-import { Header, Footer, CardList, UrlInput, Loading } from '../Components';
+import { Header, Footer, CardList, UrlInput } from '../Components';
 import { getErrorComponent } from '../Utils/renderHelpers';
 
 interface IProps {
     loading: boolean;
     error: number;
     url: string;
-    packages: Package[];
-    donePercentage: number;
+    packages: { [key: string]: Package };
     onAnalyzeClick: (url: string) => void;
 }
 
-export const AppComponent: React.FC<IProps> = ({ loading, error, url, packages, donePercentage, onAnalyzeClick }: IProps) => {
+export const AppComponent: React.FC<IProps> = ({ loading, error, url, packages, onAnalyzeClick }: IProps) => {
     return (
         <Content>
             <div>
@@ -29,7 +28,6 @@ export const AppComponent: React.FC<IProps> = ({ loading, error, url, packages, 
                         getErrorComponent(error)
                         :
                         <>
-                            {loading && <Loading percentage={donePercentage} />}
                             <CardList packages={packages} />
                         </>
                 }
